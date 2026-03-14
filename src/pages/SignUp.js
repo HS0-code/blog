@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const SignUp = () => {
   const showValues = () => {
     const firstName = document.getElementById("firstName").value;
@@ -10,11 +12,9 @@ export const SignUp = () => {
       return;
     }
 
-    console.log(firstName);
-    console.log(lastName);
-    console.log(email);
-    console.log(password);
+    console.log(firstName, lastName, email, password);
   };
+
   return (
     <div
       style={{
@@ -47,12 +47,19 @@ export const SignUp = () => {
 
         <button
           onClick={showValues}
-          style={{ backgroundColor: "blue", color: "white", width: "100%" }}
+          style={{
+            backgroundColor: "blue",
+            color: "white",
+            width: "100%",
+            cursor: "pointer",
+          }}
         >
           Sign Up
         </button>
 
-        <p>Already have an account?</p>
+        <p>
+          Already have an account? <Link to="/sign-in">Log In</Link>
+        </p>
       </div>
     </div>
   );
