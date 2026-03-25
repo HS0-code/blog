@@ -1,17 +1,28 @@
 import { Link } from "react-router-dom";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 
-export const Error404 = () => {
+export const NotFound = () => {
   return (
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        flexDirection: "column",
         height: "100vh",
         fontFamily: "sans-serif",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
+      <Header />
+
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "30px",
+        }}
+      >
         <h1 style={{ fontSize: "80px", fontWeight: "500", margin: 0 }}>404</h1>
 
         <div
@@ -34,8 +45,7 @@ export const Error404 = () => {
             Page Not Found
           </h2>
           <p style={{ color: "#666", margin: "0 0 25px 0" }}>
-            We're sorry, This page is unknown or does not exist the page you are
-            looking for.
+            We're sorry, This page is unknown or does not exist.
           </p>
           <Link
             to="/"
@@ -52,6 +62,8 @@ export const Error404 = () => {
           </Link>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

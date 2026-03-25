@@ -1,54 +1,79 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { TextField } from "../components/TextField";
+import { Button } from "../components/Button";
+import { signInFunction } from "../firebase/Firebase";
 
 export const SignIn = () => {
-  const showValues = () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
 
     if (!email || !password) {
       alert("Please fill in all fields.");
       return;
     }
 
-    console.log(email, password);
+    try {
+      await signInFunction(email, password);
+
+      setEmail("");
+      setPassword("");
+      navigate("/");
+    } catch (error) {
+      console.error("Sign In Error:", error);
+      alert("Invalid email or password.");
+    }
   };
 
   return (
     <div
       style={{
+        height: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
       }}
     >
       <div
-        style={{ border: "1px solid black", padding: "20px", width: "300px" }}
+        style={{
+          width: "300px",
+          padding: "30px",
+          backgroundColor: "white",
+          borderRadius: "5px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
       >
         <h1>Sign In</h1>
 
-        <input id="email" placeholder="Email" />
-        <br />
-        <br />
+        <TextField
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        <input id="password" type="password" placeholder="Password" />
-        <br />
-        <br />
+        <TextField
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <button
-          onClick={showValues}
-          style={{
-            backgroundColor: "blue",
-            color: "white",
-            width: "100%",
-            cursor: "pointer",
-          }}
-        >
-          Sign In
-        </button>
+        <Button onClick={handleSubmit}>Sign In</Button>
 
-        <p>
-          Do not have an account? <Link to="/sign-up">Sign Up</Link>
+        <p style={{ fontSize: "14px" }}>
+          Do not have an account?{" "}
+          <Link to="/sign-up" style={{ textDecoration: "none", color: "blue" }}>
+            Sign Up
+          </Link>
         </p>
       </div>
     </div>

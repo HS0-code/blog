@@ -1,66 +1,95 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { TextField } from "../components/TextField";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/Button";
+import { signUpFunction } from "../firebase/Firebase";
 
 export const SignUp = () => {
-  const showValues = () => {
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (!firstName || !lastName || !email || !password) {
-      alert("Please fill in all fields before signing up.");
+      alert("All 4 fields are required!");
       return;
     }
 
-    console.log(firstName, lastName, email, password);
-  };
+    try {
+      await signUpFunction(firstName, lastName, email, password);
 
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div
       style={{
+        height: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
       }}
     >
-      <div
-        style={{ border: "1px solid black", padding: "20px", width: "300px" }}
+      <form
+        style={{
+          width: "300px",
+          padding: "30px",
+          backgroundColor: "white",
+          borderRadius: "5px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
       >
         <h1>Sign Up</h1>
 
-        <input id="firstName" placeholder="First Name" />
-        <br />
-        <br />
+        <TextField
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <TextField
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <TextField
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <input id="lastName" placeholder="Last Name" />
-        <br />
-        <br />
+        <Button onClick={handleSubmit}>Sign Up</Button>
 
-        <input id="email" placeholder="Email" />
-        <br />
-        <br />
-
-        <input id="password" type="password" placeholder="Password" />
-        <br />
-        <br />
-
-        <button
-          onClick={showValues}
-          style={{
-            backgroundColor: "blue",
-            color: "white",
-            width: "100%",
-            cursor: "pointer",
-          }}
+        <Link
+          to="/sign-in"
+          style={{ textDecoration: "none", color: "black", fontSize: "14px" }}
         >
-          Sign Up
-        </button>
-
-        <p>
-          Already have an account? <Link to="/sign-in">Log In</Link>
-        </p>
-      </div>
+          Already have an account?
+        </Link>
+      </form>
     </div>
   );
 };
