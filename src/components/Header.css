@@ -1,0 +1,35 @@
+#header-container {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#link-container {
+  display: flex;
+  gap: 30px;
+}
+
+#search-container {
+  position: relative;
+}
+
+#search {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #f4f4f5;
+  padding-right: 30px;
+}
+
+#search:focus {
+  outline: none;
+}
+
+#search-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}

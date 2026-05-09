@@ -3,8 +3,10 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
+import { collection, getFirestore, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -28,4 +30,22 @@ export const signUpFunction = (firstName, lastName, email, password) => {
 
 export const signInFunction = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password);
+};
+
+export const signOutFunction = () => {
+  return signOut(auth);
+};
+
+export const database = getFirestore(app);
+export const blogsCollection = collection(database, "blogs");
+export const tagsCollection = collection(database, "tags");
+export const messageCollection = collection(database, "message");
+
+export const sendMessage = (name, email, subject, message) => {
+  return addDoc(messageCollection, {
+    name: name,
+    email: email,
+    subject: subject,
+    message: message,
+  });
 };

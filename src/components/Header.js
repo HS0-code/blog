@@ -1,41 +1,82 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { TextField } from "./TextField";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { useUserContext } from "../context/UserContext";
+import { signOutFunction } from "../firebase/Firebase";
+import { HeaderLogo } from "../assets/HeaderLogo";
 
 export const Header = () => {
+  const { currentUser } = useUserContext();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const navigate = useNavigate();
+
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+  const handleSignOut = async () => await signOutFunction();
+
   return (
     <div
       style={{
+        height: "100px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "15px 80px",
-        backgroundColor: "white",
+        padding: "0 50px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <img src="logo.png" alt="logopng"></img>
-        <h2 style={{ margin: 0, fontSize: "20px" }}>MetaBlog</h2>
-      </div>
+      <Link to="/">
+        <HeaderLogo />
+      </Link>
 
       <div style={{ display: "flex", gap: "30px" }}>
-        <Link to="/" style={{ color: "#4B5563", textDecoration: "none" }}>
+        <Link to="/" style={{ textDecoration: "none", color: "#3B3C4A" }}>
           Home
         </Link>
-        <Link to="/blog" style={{ color: "#4B5563", textDecoration: "none" }}>
-          Blog
+        <Link to="/blogs" style={{ textDecoration: "none", color: "#3B3C4A" }}>
+          Blogs
         </Link>
         <Link
           to="/contact"
-          style={{ color: "#4B5563", textDecoration: "none" }}
+          style={{ textDecoration: "none", color: "#3B3C4A" }}
         >
           Contact
         </Link>
       </div>
 
-      <div style={{ width: "160px" }}>
-        <TextField placeholder="Search" />
-      </div>
+      <Tooltip title="Account settings">
+        <IconButton
+          onClick={handleClick}
+          size="small"
+          sx={{ ml: 2 }}
+          aria-controls={open ? "account-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+        >
+          <Avatar sx={{ width: 32, height: 32 }}>
+            {currentUser
+              ? currentUser.displayName.slice(0, 1).toUpperCase()
+              : "U"}
+          </Avatar>
+        </IconButton>
+      </Tooltip>
+
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        {currentUser ? (
+          <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+        ) : (
+          <MenuItem onClick={() => navigate("/sign-in")}>Join Us</MenuItem>
+        )}
+      </Menu>
     </div>
   );
 };

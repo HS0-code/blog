@@ -1,22 +1,26 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { SignUp } from "./pages/SignUp";
-import { SignIn } from "./pages/SignIn";
-import { NotFound } from "./pages/NotFound";
-import { Contact } from "./pages/Contact";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BlogPage,
+  BlogsPage,
+  Contact,
+  Home,
+  NotFound,
+  SignIn,
+  SignUp,
+} from "./pages";
 
 export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="sign-up" element={<SignUp />} />
-        <Route path="sign-in" element={<SignIn />} />
-
-        <Route path="contact" element={<Contact />} />
-
-        <Route path="404" element={<NotFound />} />
-        <Route path="*" element={<Navigate to="/404" replace />} />
+        <Route path="/blogs" element={<BlogsPage />} />
+        <Route path="/blogs/:id" element={<BlogPage />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

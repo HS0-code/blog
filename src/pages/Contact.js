@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextField } from "../components/TextField";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { sendMessage } from "../firebase/Firebase";
 
 export const Contact = () => {
   const [name, setName] = useState("");
@@ -10,10 +11,35 @@ export const Contact = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!name || !email || !subject || !message) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await sendMessage(name, email, subject, message);
+      alert("Message sent successfully!");
+
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ fontFamily: "sans-serif" }}>
       <Header />
-
       <div
         style={{ maxWidth: "800px", margin: "50px auto", padding: "0 20px" }}
       >
@@ -91,11 +117,12 @@ export const Contact = () => {
           </div>
 
           <div style={{ width: "160px" }}>
-            <Button>Send Message</Button>
+            <Button onClick={handleSubmit} disabled={loading}>
+              {loading ? "Sending..." : "Send Message"}
+            </Button>
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
+// import { Footer } from "../components/Footer";
 
 export const NotFound = () => {
   return (
@@ -16,11 +16,11 @@ export const NotFound = () => {
 
       <div
         style={{
-          flex: 1,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           gap: "30px",
+          marginTop: "100px",
         }}
       >
         <h1 style={{ fontSize: "80px", fontWeight: "500", margin: 0 }}>404</h1>
@@ -62,8 +62,6 @@ export const NotFound = () => {
           </Link>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };
