@@ -5,6 +5,7 @@ import { CreateBlogModal } from "../components/CreateBlogModal";
 import { useBlogContext } from "../context/BlogContext";
 import { Header } from "../components/Header";
 import { useUserContext } from "../context/UserContext";
+
 export const BlogsPage = () => {
   const [openBlog, setOpenBlog] = useState(false);
   const handleOpenBlog = () => setOpenBlog(true);
@@ -13,6 +14,7 @@ export const BlogsPage = () => {
   const { loading } = useUserContext();
 
   if (loading || blogsLoading) return <p>Loading...</p>;
+
   return (
     <div
       style={{
@@ -20,18 +22,30 @@ export const BlogsPage = () => {
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
+        padding: "0 20px",
       }}
     >
       <Header />
-      <div>
-        <Button onClick={handleOpenBlog}>Create Blog</Button>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "30px 0",
+        }}
+      >
+        <Button onClick={handleOpenBlog} style={{ width: "200px" }}>
+          Create Blog
+        </Button>
       </div>
+
       <div
         style={{
           display: "flex",
           flexWrap: "wrap",
           gap: 20,
           marginTop: 20,
+          marginBottom: 100,
         }}
       >
         {blogs.map((blog, key) => (
@@ -40,6 +54,7 @@ export const BlogsPage = () => {
           </div>
         ))}
       </div>
+
       <CreateBlogModal open={openBlog} handleClose={handleCloseBlog} />
     </div>
   );
